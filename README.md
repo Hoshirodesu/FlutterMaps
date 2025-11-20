@@ -12,10 +12,9 @@ Kelas: TIF RP 23 CID B
 1. SplashScreen
 2. Halaman Login
 3. Halaman Register
-4. Library Flutter (flutter_map: ^8.2.2, latlong2: ^0.9.1, shared_preferences: ^2.5.3, cupertino_icons: ^1.0.8)
-5. Halaman List Informasi (ListView)
-6. Menu Bottom Navigation
-7. About Aplikasi
+4. Halaman List Informasi (ListView)
+5. Menu Bottom Navigation
+6. About Aplikasi
 
 ## Fitur dan penjelasan
 ### 1. SplashScreen
@@ -232,7 +231,7 @@ class _LoginPageState extends State<LoginPage> {
 ```
 
 ### 3. Halaman register
-<img src="https://github.com/user-attachments/assets/04ce0cea-28e2-4113-baff-c711aa8214e3" alt="login" width="340" height="760">
+<img src="https://github.com/user-attachments/assets/04ce0cea-28e2-4113-baff-c711aa8214e3" alt="register" width="340" height="760">
 
 #### Halaman ini berfungsi untuk mendaftarkan akun, pengguna akan memasukkan nama, email, password, confirm password. Jika sudah mendaftar akun, maka akan dirahkan ke menu login
 #### Hasil implementasi:
@@ -384,9 +383,9 @@ class _RegisterPageState extends State<RegisterPage> {
 ```
 
 ### 4. Halaman utama
-<img src="https://github.com/user-attachments/assets/e70c01ce-2d00-4d06-a476-1b13e6c18a48" alt="login" width="340" height="760">
+<img src="https://github.com/user-attachments/assets/e70c01ce-2d00-4d06-a476-1b13e6c18a48" alt="maps" width="340" height="760">
 
-Ini adalah halaman maps yang menampilkan marker lokasi dan sudah diintegrasi dengan cartocdn sebagai basemap dan juga ada tombol di pojok kanan bawah untuk reset posisi
+#### Ini adalah halaman maps yang menampilkan marker lokasi dan sudah diintegrasi dengan cartocdn sebagai basemap dan juga ada tombol di pojok kanan bawah untuk reset posisi
 
 #### Hasil implementasi:
 map_page.dart
@@ -559,11 +558,329 @@ class _MapPageWithLocationState extends State<MapPageWithLocation> {
 }
 ```
 
+### 5. Halaman daftar lokasi
+<img src="https://github.com/user-attachments/assets/d134088a-d2d5-4a36-bc1c-87bac6215264" alt="locationlist" width="340" height="760">
+
+#### halaman ini berisi informasi (ListView) daftar-daftar lokasi yang ada di peta
+#### Hasil implementasi:
+location_list_page.dart
+```dart
+import 'package:flutter/material.dart';
+import '../models/location_item.dart';
+import 'package:latlong2/latlong.dart';
+import 'map_page.dart';
+
+class LocationListPage extends StatelessWidget {
+  const LocationListPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final locations = [
+      LocationItem(
+        name: 'Gedung Sate',
+        address: 'Jl. Diponegoro No.22, Bandung',
+        distance: '1.2 km',
+        icon: Icons.account_balance,
+        color: Colors.green,
+        coordinates: LatLng(-6.90231172693644, 107.61888418568023)
+      ),
+      LocationItem(
+        name: 'Alun-alun Kota Bandung',
+        address: 'Jl. Asia Afrika, Kb. Pisang, Kec. Regol, Kota Bandung, Jawa Barat',
+        distance: '1.5 km',
+        icon: Icons.park,
+        color: Colors.teal,
+        coordinates: LatLng(-6.921605829602792, 107.60735197403348)
+      ),
+      LocationItem(
+        name: 'Museum Geologi',
+        address: 'Jl. Cihampelas, Bandung',
+        distance: '4.0 km',
+        icon: Icons.museum,
+        color: Colors.blue,
+        coordinates: LatLng(-6.900397550653932, 107.62134792597112)
+      ),
+      LocationItem(
+        name: 'Universitas Teknologi Bandung',
+        address: 'Jl. Soekarno-Hatta No.378, Kb. Lega, Kec. Bojongloa Kidul, Kota Bandung',
+        distance: '5.8 km',
+        icon: Icons.school,
+        color: Colors.brown,
+        coordinates: LatLng(-6.947987692060791, 107.60108990897473)
+      ),
+       LocationItem(
+        name: 'Masjid Raya Bandung',
+        address: 'Jl. Alun-alun, Bandung',
+        distance: '2.0 km',
+        icon: Icons.mosque,
+        color: Colors.teal,
+        coordinates: LatLng(-6.9215, 107.6074),
+      ),
+      LocationItem(
+        name: 'Braga Street',
+        address: 'Jl. Braga, Bandung',
+        distance: '1.8 km',
+        icon: Icons.restaurant,
+        color: Colors.orange,
+        coordinates: LatLng(-6.9147, 107.6098),
+      ),
+      LocationItem(
+        name: 'Tangkuban Perahu',
+        address: 'Lembang, Bandung Barat',
+        distance: '25 km',
+        icon: Icons.terrain,
+        color: Colors.brown,
+        coordinates: LatLng(-6.7597, 107.6098),
+      ),
+      LocationItem(
+        name: 'Kawah Putih',
+        address: 'Ciwidey, Bandung Selatan',
+        distance: '50 km',
+        icon: Icons.water,
+        color: Colors.cyan,
+        coordinates: LatLng(-7.1661, 107.4025),
+      ),
+    ];
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Daftar Lokasi'),
+      ),
+      body: ListView.builder(
+        padding: const EdgeInsets.all(8),
+        itemCount: locations.length,
+        itemBuilder: (context, index) {
+          final location = locations[index];
+          return Card(
+            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundColor: location.color,
+                child: Icon(location.icon, color: Colors.white),
+              ),
+              title: Text(
+                location.name,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 4),
+                  Text(location.address),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      const Icon(Icons.directions_walk, size: 16),
+                      const SizedBox(width: 4),
+                      Text(location.distance),
+                    ],
+                  ),
+                ],
+              ),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MapPageWithLocation(
+                      locationName: location.name,
+                      coordinates: location.coordinates,
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+```
+
+### 6. Halaman peta dengan koordinat
+<img src="https://github.com/user-attachments/assets/a90a6b81-49c1-4744-9ba3-30e46998ea03" alt="mappagewithlocation" width="340" height="760">
+
+#### Ketika salah satu daftar lokasi disentuh maka akan diarahkan ke peta dengan koordinat lokasi tersebut
+#### Hasil implementasi
+map_page.dart
+```dart
+class MapPageWithLocation extends StatefulWidget {
+  final String locationName;
+  final LatLng coordinates;
+
+  const MapPageWithLocation({
+    super.key,
+    required this.locationName,
+    required this.coordinates,
+  });
+
+  @override
+  State<MapPageWithLocation> createState() => _MapPageWithLocationState();
+}
+
+class _MapPageWithLocationState extends State<MapPageWithLocation> {
+  final MapController _mapController = MapController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.locationName),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      body: FlutterMap(
+        mapController: _mapController,
+        options: MapOptions(
+          initialCenter: widget.coordinates,
+          initialZoom: 15.0,
+          interactionOptions: InteractionOptions(
+            flags: InteractiveFlag.all,
+          ),
+        ),
+        children: [
+          TileLayer(
+            urlTemplate: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+            userAgentPackageName: 'dev.fleaflet.flutter_map.example',
+            maxZoom: 19,
+          ),
+          MarkerLayer(
+            markers: [
+              Marker(
+                point: widget.coordinates,
+                width: 80,
+                height: 80,
+                child: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 4,
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        widget.locationName,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const Icon(
+                      Icons.location_pin,
+                      color: Colors.red,
+                      size: 40,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _mapController.move(widget.coordinates, 15.0);
+        },
+        child: const Icon(Icons.my_location),
+      ),
+    );
+  }
+}
+```
+
+### 7. Halaman about
+<img src="https://github.com/user-attachments/assets/2f1cbc04-4717-48cd-8b35-82088dfc6a6f" alt="about" width="340" height="760">
+
+#### Halaman ini berisi tentang aplikasi besarta informasi copyright
+#### Hasil implementasi:
+about_page.dart
+```dart
+import 'package:flutter/material.dart';
+
+class AboutPage extends StatelessWidget {
+  const AboutPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('About'),
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.map,
+                size: 100,
+                color: Colors.blue,
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Flutter Maps App',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'Version 1.0.0',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                ),
+              ),
+              const SizedBox(height: 40),
+              const Text(
+                'Aplikasi Maps yang dibuat dari Flutter.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 40),
+              const Divider(),
+              const SizedBox(height: 20),
+              const Text(
+                '© 2025 Copyright by Mochammad Raffi Fadhillah_23552011066',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'All rights reserved',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
 
 ## Library yang digunakan
 | Library      | Fungsi |
 | --------------- | ------ |
-| <a href="https://pub.dev/packages/flutter_map" target="flutter_map">flutter_map</a> | Library ini dugnakan untuk menampilkan peta di aplikasi flutter |
+| <a href="https://pub.dev/packages/flutter_map" target="flutter_map">flutter_map</a> | Library ini digunakan untuk menampilkan peta di aplikasi flutter |
 | <a href="https://pub.dev/packages/latlong2" target="latlong2">latlong2</a> | Library ini digunakan untuk mewakili tipe data koordinat pada peta |
 | <a href="https://pub.dev/packages/shared_preferences" target="shared_preferences">shared_preferences</a> | Library ini digunakan untuk menyimpan data lokal dalam bentuk key–value  |
 | <a href="https://pub.dev/packages/cupertino_icons" target="cupertino_icons">cupertino_icons</a> | Library ini berisi ikon desain  |
