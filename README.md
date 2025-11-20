@@ -21,7 +21,7 @@ Kelas: TIF RP 23 CID B
 ### 1. SplashScreen
 <img src="https://github.com/user-attachments/assets/fe853268-8992-46d1-87d7-79e7b5797a03" alt="splashscreen" width="340" height="760">
 
-#### Menampilkan animasi splashscreen dengan animasi loading sebelum ke menu login
+#### Menampilkan logo splashscreen dengan animasi loading sebelum ke menu login
 #### Hasil implementasi:
 splash_screen.dart
 ```dart
